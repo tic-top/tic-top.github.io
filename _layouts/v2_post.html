@@ -1,0 +1,20 @@
+---
+layout: v2
+---
+<article class="container post post-shell">
+  <div class="post-top-links">
+    <a href="{{ '/blog/' | relative_url }}">← 返回中文博客</a>
+    <a href="{{ '/en/blog/' | relative_url }}">English Blog →</a>
+  </div>
+  <p class="eyebrow">Blog Post</p>
+  <h1>{{ page.title }}</h1>
+  <p class="meta">{{ page.date | date: '%B %d, %Y' }}</p>
+  {% if page.tags %}
+  <p class="tags">
+    {% for tag in page.tags %}<span>{{ tag }}</span>{% endfor %}
+  </p>
+  {% endif %}
+  <div class="prose">
+    {{ content }}
+  </div>
+</article>
