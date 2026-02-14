@@ -1,57 +1,48 @@
 ---
-layout: archive
-title: "CV"
+layout: v2
+title: Resume
+lang: zh-CN
+translated_url: /en/cv/
 permalink: /cv/
-author_profile: true
-redirect_from:
-  - /resume
 ---
 
-{% include base_path %}
+<section class="section">
+  <div class="container">
+    <p class="eyebrow">Resume</p>
+    <h1>Education & Experience</h1>
 
-Education
-======
-* B.S. in CS, University of Michigan, 2024(expected)
-* B.S. in ECE, Shanghai Jiaotong University, 2024(expected)
+    <h2>Education</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <h3>B.S. in Computer Science · University of Michigan</h3>
+        <p class="meta">Expected 2024</p>
+      </div>
+      <div class="timeline-item">
+        <h3>B.S. in ECE · Shanghai Jiao Tong University</h3>
+        <p class="meta">Expected 2024</p>
+      </div>
+    </div>
 
-Work experience
-======
-* Summer 2021: Research Assistant
-  * Shanghai Jiaotong University
-  * Duties included: Train a anomaly sound dectection model and deployed to RZ/T2 borad.
-  * Supervisor: Fan Wu
+    <h2>Research Experience</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <h3>Research Assistant · Shanghai Jiao Tong University</h3>
+        <p class="meta">Summer 2021 · Supervisor: Fan Wu</p>
+        <p>Trained an anomaly sound detection model and deployed it to RZ/T2 board.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>Research Assistant · University of Michigan</h3>
+        <p class="meta">Summer 2023 · Supervisor: Rada Mihalcea</p>
+        <p>Tested tokenizer performance on PsyQA and benchmarked multiple LLMs.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>Research Assistant · University of Michigan</h3>
+        <p class="meta">Fall 2023 · Supervisor: Lin Ma</p>
+        <p>Built a model to predict SQL execution time under different lakehouse settings.</p>
+      </div>
+    </div>
 
-* Summer 2023: Research Assistant
-  * University of Michigan
-  * Duties included: Test the new tokenizer on PsyQA dataset. Test different LLMs on our proposed benchmark.
-  * Supervisor: Rada Michaelle
-
-* Fall 2023: Research Assistant
-  * University of Michigan
-  * Duties included: Build a model to predict the SQL execution time on different lakehouse setting
-  * Supervisor: Lin Ma
-
-  
-Programming Language
-======
-* C, C++, Python, Elm, SQL, Latex, MATLAB
-
-Publications
-======
-  <ul>{% for post in site.publications %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-
-<!--  
-Talks
-======
-  <ul>{% for post in site.talks %}
-    {% include archive-single-talk-cv.html %}
-  {% endfor %}</ul>
-  
-Teaching
-======
-  <ul>{% for post in site.teaching %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-   -->
+    <h2>Skills</h2>
+    <p>C, C++, Python, Elm, SQL, LaTeX, MATLAB</p>
+  </div>
+</section>

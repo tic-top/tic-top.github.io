@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="{% if page.lang %}{{ page.lang }}{% else %}zh-CN{% endif %}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+    <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | strip_newlines }}" />
+    <link rel="stylesheet" href="{{ '/assets/css/v2.css' | relative_url }}" />
+  </head>
+  <body>
+    {% assign is_en = page.lang == 'en' %}
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="{% if is_en %}{{ '/en/' | relative_url }}{% else %}{{ '/' | relative_url }}{% endif %}">Yilin Jia <span>●</span></a>
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+        <nav class="site-nav">
+          <a href="{% if is_en %}{{ '/en/' | relative_url }}#projects{% else %}{{ '/' | relative_url }}#projects{% endif %}">{% if is_en %}Projects{% else %}个人项目{% endif %}</a>
+          <a href="{% if is_en %}{{ '/en/' | relative_url }}#timeline{% else %}{{ '/' | relative_url }}#timeline{% endif %}">{% if is_en %}Timeline{% else %}时间轴{% endif %}</a>
+          <a href="{% if is_en %}{{ '/en/' | relative_url }}#tech-blog{% else %}{{ '/' | relative_url }}#tech-blog{% endif %}">{% if is_en %}Tech Blog{% else %}技术博客{% endif %}</a>
+          <a href="{% if is_en %}{{ '/en/cv/' | relative_url }}{% else %}{{ '/cv/' | relative_url }}{% endif %}" {% if page.url contains '/cv/' %}class="active"{% endif %}>{% if is_en %}Resume{% else %}简历{% endif %}</a>
+          <a href="{% if is_en %}{{ '/en/blog/' | relative_url }}{% else %}{{ '/blog/' | relative_url }}{% endif %}" {% if page.url contains '/blog/' or page.layout == 'v2_post' %}class="active"{% endif %}>Blog</a>
+          {% if page.translated_url %}
+          <a href="{{ page.translated_url | relative_url }}" class="lang-switch">{% if is_en %}中文{% else %}English{% endif %}</a>
+          {% endif %}
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      {{ content }}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© {{ site.time | date: '%Y' }} {{ site.author.name }} · {% if is_en %}Responsive personal website for mobile / tablet / desktop{% else %}自适应个人网站（手机/平板/桌面）{% endif %}</p>
+      </div>
+    </footer>
+    <script src="{{ '/assets/js/v2.js' | relative_url }}"></script>
+  </body>
+</html>
