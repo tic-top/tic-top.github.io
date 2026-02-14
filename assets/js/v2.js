@@ -29,23 +29,24 @@ if (menuBtn && nav) {
   resize();
   window.addEventListener('resize', resize);
 
-  // 5 soft blobs that drift around
+  // 6 soft blobs with visible drift
   const blobs = [];
   const palette = [
-    [37, 99, 235],   // brand blue
-    [124, 58, 237],  // accent purple
-    [6, 182, 212],   // cyan
-    [59, 130, 246],  // light blue
-    [167, 139, 250], // lavender
+    [147, 197, 253, 0.18], // soft blue
+    [196, 181, 253, 0.15], // soft lavender
+    [165, 243, 252, 0.14], // soft cyan
+    [191, 219, 254, 0.16], // pale blue
+    [221, 214, 254, 0.13], // pale purple
+    [186, 230, 253, 0.15], // sky
   ];
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < palette.length; i++) {
     blobs.push({
       x: Math.random(), y: Math.random(),
-      vx: (Math.random() - 0.5) * 0.0003,
-      vy: (Math.random() - 0.5) * 0.0003,
-      r: 0.25 + Math.random() * 0.2,
+      vx: (Math.random() - 0.5) * 0.003,
+      vy: (Math.random() - 0.5) * 0.003,
+      r: 0.18 + Math.random() * 0.15,
       color: palette[i],
-      phase: Math.random() * Math.PI * 2,
+      phase: (i / palette.length) * Math.PI * 2,
     });
   }
 
@@ -55,23 +56,24 @@ if (menuBtn && nav) {
     ctx.fillStyle = '#f8fafc';
     ctx.fillRect(0, 0, w, h);
 
-    const s = Math.min(w, h);
+    const s = Math.max(w, h);
     for (const b of blobs) {
-      // Drift
-      b.x += b.vx + Math.sin(t * 0.0002 + b.phase) * 0.00008;
-      b.y += b.vy + Math.cos(t * 0.00015 + b.phase) * 0.00008;
-      // Wrap around edges softly
-      if (b.x < -0.2) b.x = 1.2;
-      if (b.x > 1.2) b.x = -0.2;
-      if (b.y < -0.2) b.y = 1.2;
-      if (b.y > 1.2) b.y = -0.2;
+      // Visible drift with sine wobble
+      b.x += b.vx + Math.sin(t * 0.003 + b.phase) * 0.002;
+      b.y += b.vy + Math.cos(t * 0.0025 + b.phase * 1.3) * 0.002;
+      // Wrap around edges
+      if (b.x < -0.3) b.x = 1.3;
+      if (b.x > 1.3) b.x = -0.3;
+      if (b.y < -0.3) b.y = 1.3;
+      if (b.y > 1.3) b.y = -0.3;
 
-      const pulse = b.r + Math.sin(t * 0.0003 + b.phase) * 0.04;
+      const pulse = b.r + Math.sin(t * 0.004 + b.phase) * 0.05;
       const cx = b.x * w, cy = b.y * h, cr = pulse * s;
-      const [r, g, bl] = b.color;
+      const [r, g, bl, a] = b.color;
       const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, cr);
-      grad.addColorStop(0, `rgba(${r},${g},${bl},0.12)`);
-      grad.addColorStop(0.5, `rgba(${r},${g},${bl},0.05)`);
+      grad.addColorStop(0, `rgba(${r},${g},${bl},${a})`);
+      grad.addColorStop(0.5, `rgba(${r},${g},${bl},${a * 0.4})`);
+      grad.addColorStop(0.8, `rgba(${r},${g},${bl},${a * 0.1})`);
       grad.addColorStop(1, `rgba(${r},${g},${bl},0)`);
       ctx.fillStyle = grad;
       ctx.fillRect(cx - cr, cy - cr, cr * 2, cr * 2);
@@ -278,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Unified animation loop: background + cover art
   let lastFrame = 0;
   function animate(now) {
-    if (now - lastFrame > 50) {
+    if (now - lastFrame > 30) {
       lastFrame = now;
       // Flowing background
       if (window._bgDraw) window._bgDraw(now);
