@@ -16,7 +16,7 @@ if (menuBtn && nav) {
   });
 }
 
-// === 2. Cover Art Generator ===
+// === 2. Animated Cover Art Generator ===
 
 function hashString(str) {
   let h1 = 5381, h2 = 52711;
@@ -49,7 +49,7 @@ function seededRandom(seed) {
   };
 }
 
-function drawCover(canvas, seed) {
+function drawCover(canvas, seed, time) {
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
   const width = canvas.width / dpr;
@@ -60,54 +60,66 @@ function drawCover(canvas, seed) {
   const random = seededRandom(hash.h1);
   const { hue1, hue2, hue3, saturation, lightness, shapeCount, patternType, gradientAngle } = params;
 
+  // Slow time factor for gentle animation
+  const t = time * 0.0004;
+
   ctx.clearRect(0, 0, width, height);
 
-  // Layer 1: Gradient background
-  const angleRad = (gradientAngle * Math.PI) / 180;
+  // Layer 1: Animated gradient background
+  const angleRad = ((gradientAngle + Math.sin(t * 0.3) * 15) * Math.PI) / 180;
   const gx1 = width / 2 - Math.cos(angleRad) * width;
   const gy1 = height / 2 - Math.sin(angleRad) * height;
   const gx2 = width / 2 + Math.cos(angleRad) * width;
   const gy2 = height / 2 + Math.sin(angleRad) * height;
   const gradient = ctx.createLinearGradient(gx1, gy1, gx2, gy2);
-  gradient.addColorStop(0, `hsl(${hue1}, ${saturation}%, ${lightness}%)`);
-  gradient.addColorStop(1, `hsl(${hue2}, ${saturation}%, ${lightness + 5}%)`);
+  const hueShift = Math.sin(t * 0.2) * 8;
+  gradient.addColorStop(0, `hsl(${hue1 + hueShift}, ${saturation}%, ${lightness}%)`);
+  gradient.addColorStop(1, `hsl(${hue2 + hueShift}, ${saturation}%, ${lightness + 5}%)`);
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, width, height);
 
-  // Layer 2: Pattern
+  // Layer 2: Animated pattern
   ctx.save();
   if (patternType === 0) {
-    // Mesh gradient
+    // Floating mesh blobs
     const meshCount = 5 + Math.floor(random() * 4);
     for (let i = 0; i < meshCount; i++) {
-      const x = random() * width, y = random() * height;
+      const baseX = random() * width, baseY = random() * height;
+      const x = baseX + Math.sin(t * 0.5 + i * 1.7) * 12;
+      const y = baseY + Math.cos(t * 0.4 + i * 2.1) * 10;
       const radius = (50 + random() * 150) * Math.min(width, height) / 400;
-      const radialGrad = ctx.createRadialGradient(x, y, 0, x, y, radius);
-      radialGrad.addColorStop(0, `hsla(${hue3}, ${saturation + 10}%, ${lightness + 10}%, 0.25)`);
-      radialGrad.addColorStop(1, `hsla(${hue1}, ${saturation}%, ${lightness}%, 0)`);
+      const pulse = 1 + Math.sin(t * 0.6 + i) * 0.08;
+      const radialGrad = ctx.createRadialGradient(x, y, 0, x, y, radius * pulse);
+      radialGrad.addColorStop(0, `hsla(${hue3 + hueShift}, ${saturation + 10}%, ${lightness + 10}%, 0.25)`);
+      radialGrad.addColorStop(1, `hsla(${hue1 + hueShift}, ${saturation}%, ${lightness}%, 0)`);
       ctx.fillStyle = radialGrad;
-      ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(x, y, radius * pulse, 0, Math.PI * 2); ctx.fill();
     }
   } else if (patternType === 1) {
-    // Concentric circles
+    // Breathing concentric circles
     const centerX = width / 2 + (random() - 0.5) * width * 0.3;
     const centerY = height / 2 + (random() - 0.5) * height * 0.3;
     const ringCount = 6 + Math.floor(random() * 4);
     const maxRadius = Math.max(width, height) * 0.7;
     for (let i = 0; i < ringCount; i++) {
-      const radius = (maxRadius / ringCount) * (i + 1);
-      ctx.strokeStyle = `hsla(${(hue2 + i * 15) % 360}, ${saturation}%, ${lightness}%, 0.15)`;
+      const breath = 1 + Math.sin(t * 0.5 + i * 0.8) * 0.06;
+      const radius = (maxRadius / ringCount) * (i + 1) * breath;
+      const alpha = 0.15 + Math.sin(t * 0.3 + i * 0.5) * 0.05;
+      ctx.strokeStyle = `hsla(${(hue2 + i * 15 + hueShift) % 360}, ${saturation}%, ${lightness}%, ${alpha})`;
       ctx.lineWidth = 8 + random() * 15;
       ctx.beginPath(); ctx.arc(centerX, centerY, radius, 0, Math.PI * 2); ctx.stroke();
     }
   } else if (patternType === 2) {
-    // Triangles
+    // Drifting & rotating triangles
     const triCount = 8 + Math.floor(random() * 8);
     for (let i = 0; i < triCount; i++) {
-      const tx = random() * width, ty = random() * height;
+      const baseX = random() * width, baseY = random() * height;
+      const tx = baseX + Math.sin(t * 0.3 + i * 1.3) * 8;
+      const ty = baseY + Math.cos(t * 0.25 + i * 1.7) * 8;
       const size = (30 + random() * 100) * Math.min(width, height) / 400;
-      const rot = random() * Math.PI * 2;
-      ctx.fillStyle = `hsla(${(hue1 + i * 20) % 360}, ${saturation - 10}%, ${lightness}%, 0.2)`;
+      const rot = random() * Math.PI * 2 + t * 0.15;
+      const alpha = 0.2 + Math.sin(t * 0.4 + i) * 0.05;
+      ctx.fillStyle = `hsla(${(hue1 + i * 20 + hueShift) % 360}, ${saturation - 10}%, ${lightness}%, ${alpha})`;
       ctx.beginPath();
       ctx.moveTo(tx + Math.cos(rot) * size, ty + Math.sin(rot) * size);
       ctx.lineTo(tx + Math.cos(rot + Math.PI * 2/3) * size, ty + Math.sin(rot + Math.PI * 2/3) * size);
@@ -115,31 +127,40 @@ function drawCover(canvas, seed) {
       ctx.closePath(); ctx.fill();
     }
   } else {
-    // Bezier waves
+    // Undulating bezier waves
     const waveCount = 5 + Math.floor(random() * 5);
     for (let i = 0; i < waveCount; i++) {
-      ctx.strokeStyle = `hsla(${(hue3 + i * 25) % 360}, ${saturation}%, ${lightness - 5}%, 0.25)`;
+      const hueVal = (hue3 + i * 25 + hueShift) % 360;
+      const alpha = 0.25 + Math.sin(t * 0.3 + i * 0.9) * 0.08;
+      ctx.strokeStyle = `hsla(${hueVal}, ${saturation}%, ${lightness - 5}%, ${alpha})`;
       ctx.lineWidth = 3 + random() * 8;
       ctx.lineCap = 'round';
+      const drift = Math.sin(t * 0.4 + i) * 15;
       ctx.beginPath();
-      ctx.moveTo(random() * width, random() * height);
-      ctx.bezierCurveTo(random() * width, random() * height, random() * width, random() * height, random() * width, random() * height);
+      ctx.moveTo(random() * width, random() * height + drift);
+      ctx.bezierCurveTo(
+        random() * width, random() * height + drift * 0.7,
+        random() * width, random() * height - drift * 0.5,
+        random() * width, random() * height + drift
+      );
       ctx.stroke();
     }
   }
   ctx.restore();
 
-  // Layer 3: Decorative shapes
+  // Layer 3: Floating decorative shapes
   for (let i = 0; i < shapeCount; i++) {
-    const x = random() * width, y = random() * height;
+    const baseX = random() * width, baseY = random() * height;
+    const x = baseX + Math.sin(t * 0.35 + i * 2.3) * 10;
+    const y = baseY + Math.cos(t * 0.3 + i * 1.9) * 8;
     const size = (10 + random() * 40) * Math.min(width, height) / 400;
     const shapeType = Math.floor(random() * 3);
-    const alpha = 0.1 + random() * 0.25;
-    ctx.fillStyle = `hsla(${(hue2 + i * 30) % 360}, ${saturation + 10}%, ${lightness + 10}%, ${alpha})`;
+    const alpha = 0.1 + random() * 0.25 + Math.sin(t * 0.5 + i) * 0.04;
+    ctx.fillStyle = `hsla(${(hue2 + i * 30 + hueShift) % 360}, ${saturation + 10}%, ${lightness + 10}%, ${alpha})`;
     if (shapeType === 0) {
       ctx.beginPath(); ctx.arc(x, y, size, 0, Math.PI * 2); ctx.fill();
     } else if (shapeType === 1) {
-      ctx.save(); ctx.translate(x, y); ctx.rotate(Math.PI / 4);
+      ctx.save(); ctx.translate(x, y); ctx.rotate(Math.PI / 4 + t * 0.1);
       ctx.fillRect(-size, -size, size * 2, size * 2); ctx.restore();
     } else {
       ctx.beginPath(); ctx.moveTo(x, y - size);
@@ -148,27 +169,60 @@ function drawCover(canvas, seed) {
     }
   }
 
-  // Layer 4: Dot texture
+  // Layer 4: Twinkling dot texture
   const dotSpacing = 15;
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
   for (let dx = dotSpacing / 2; dx < width; dx += dotSpacing) {
     for (let dy = dotSpacing / 2; dy < height; dy += dotSpacing) {
       if (random() > 0.6) {
+        const twinkle = 0.03 + Math.sin(t * 1.5 + dx * 0.1 + dy * 0.13) * 0.025;
+        ctx.fillStyle = `rgba(255, 255, 255, ${twinkle})`;
         ctx.beginPath(); ctx.arc(dx, dy, 1, 0, Math.PI * 2); ctx.fill();
       }
     }
   }
 }
 
-// === 3. Auto-init ===
+// === 3. Animation loop ===
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('canvas.auto-cover[data-seed]').forEach(canvas => {
+  const canvases = document.querySelectorAll('canvas.auto-cover[data-seed]');
+  if (!canvases.length) return;
+
+  // Initialize canvas sizes
+  canvases.forEach(canvas => {
     const rect = canvas.getBoundingClientRect();
     const dpr = window.devicePixelRatio || 1;
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
     const ctx = canvas.getContext('2d');
     ctx.scale(dpr, dpr);
-    drawCover(canvas, canvas.dataset.seed);
+    drawCover(canvas, canvas.dataset.seed, 0);
   });
+
+  // Animation loop with IntersectionObserver for performance
+  const visibleCanvases = new Set();
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        visibleCanvases.add(entry.target);
+      } else {
+        visibleCanvases.delete(entry.target);
+      }
+    });
+  }, { threshold: 0.05 });
+
+  canvases.forEach(c => observer.observe(c));
+
+  let lastFrame = 0;
+  function animate(now) {
+    // Throttle to ~20fps for smooth but lightweight animation
+    if (now - lastFrame > 50) {
+      lastFrame = now;
+      visibleCanvases.forEach(canvas => {
+        drawCover(canvas, canvas.dataset.seed, now);
+      });
+    }
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
 });

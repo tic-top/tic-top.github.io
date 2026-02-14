@@ -11,7 +11,7 @@ translated_url: /en/
     <img src="{{ '/images/1.jpg' | relative_url }}" alt="Yilin Jia" class="avatar" />
     <h1>你好，我是 <span class="accent">Yilin</span></h1>
     <p class="lead">
-      University of Michigan (CS) 与 Shanghai Jiao Tong University (ECE) 双学位，研究方向为自然语言处理与多模态学习。
+      密歇根大学 CS &times; 上海交大 ECE 双学位在读，热衷于用代码探索语言与世界的边界——从 NLP 到多模态，从量化交易到高性能计算，写得了论文也造得了轮子。
     </p>
     <div class="social-bar">
       <a href="https://github.com/tic-top" target="_blank" title="GitHub">
@@ -23,26 +23,6 @@ translated_url: /en/
       <a href="mailto:kirp@umich.edu" title="Email">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
       </a>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="research">
-  <div class="container">
-    <h2 class="section-title">研究项目</h2>
-    <div class="project-grid">
-      {% for item in site.data.projects %}
-      <article class="project-card">
-        <div class="project-card-cover">
-          <canvas class="auto-cover" data-seed="{{ item.title }}"></canvas>
-        </div>
-        <div class="project-content">
-          <h3>{{ item.title }}</h3>
-          <p>{{ item.description }}</p>
-          <p class="tag-row">{% for t in item.tags %}<span>{{ t }}</span>{% endfor %}</p>
-        </div>
-      </article>
-      {% endfor %}
     </div>
   </div>
 </section>
@@ -68,6 +48,26 @@ translated_url: /en/
           {% endif %}
         </div>
       </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="research">
+  <div class="container">
+    <h2 class="section-title">研究项目</h2>
+    <div class="project-grid">
+      {% for item in site.data.projects %}
+      <article class="project-card">
+        <div class="project-card-cover">
+          <canvas class="auto-cover" data-seed="{{ item.title }}"></canvas>
+        </div>
+        <div class="project-content">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+          <p class="tag-row">{% for t in item.tags %}<span>{{ t }}</span>{% endfor %}</p>
+        </div>
+      </article>
       {% endfor %}
     </div>
   </div>
