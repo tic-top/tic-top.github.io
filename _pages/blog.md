@@ -1,18 +1,12 @@
 ---
 layout: v2
 title: Blog
-lang: zh-CN
-translated_url: /en/blog/
 permalink: /blog/
 ---
 
 <section class="section">
   <div class="container">
-    <div class="section-head">
-      <h1 class="section-title">技术博客</h1>
-      <a href="{{ '/en/blog/' | relative_url }}">English &rarr;</a>
-    </div>
-    <p class="lead small">中英文博客共享同一批文章，标题保持原文。</p>
+    <h1 class="section-title">Blog</h1>
     <div class="blog-grid">
       {% for post in site.posts %}
       <a class="blog-card" href="{{ post.url | relative_url }}">

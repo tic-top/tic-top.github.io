@@ -4,11 +4,6 @@ layout: v2
 <article class="container post post-shell">
   <div class="post-top-links">
     <a href="{{ '/blog/' | relative_url }}">&larr; Blog</a>
-    {% if page.lang == 'en' %}
-    <a href="{{ '/blog/' | relative_url }}">中文 Blog</a>
-    {% else %}
-    <a href="{{ '/en/blog/' | relative_url }}">English Blog &rarr;</a>
-    {% endif %}
   </div>
   <div class="post-cover-wrapper">
     <canvas class="auto-cover" data-seed="{{ page.title }}"></canvas>

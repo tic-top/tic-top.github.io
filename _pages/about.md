@@ -2,16 +2,14 @@
 permalink: /
 layout: v2
 title: Home
-lang: zh-CN
-translated_url: /en/
 ---
 
 <section class="hero">
   <div class="container hero-center">
     <img src="{{ '/images/1.jpg' | relative_url }}" alt="Yilin Jia" class="avatar" />
-    <h1>你好，我是 <span class="accent">Yilin</span></h1>
+    <h1>Hi, I'm <span class="accent">Yilin</span></h1>
     <p class="lead">
-      密歇根大学 CS &times; 上海交大 ECE 双学位在读，热衷于用代码探索语言与世界的边界——从 NLP 到多模态，从量化交易到高性能计算，写得了论文也造得了轮子。
+      Master at UMich CS, Dual-degree undergrad at UMich CS &times; SJTU ECE. I love building things with AI.
     </p>
     <div class="social-bar">
       <a href="https://github.com/tic-top" target="_blank" title="GitHub">
@@ -27,11 +25,27 @@ translated_url: /en/
   </div>
 </section>
 
+<section class="section" id="publications">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Publications</h2>
+      <a href="{{ site.author.googlescholar }}" target="_blank">Google Scholar &rarr;</a>
+    </div>
+    {% for pub in site.publications reversed %}
+    <div class="pub-item">
+      <h3><a href="{{ pub.paperurl }}" target="_blank">{{ pub.title }}</a></h3>
+      <p class="meta">{{ pub.venue }}</p>
+      <p>{{ pub.excerpt }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
 <section class="section" id="blog">
   <div class="container">
     <div class="section-head">
-      <h2 class="section-title">技术博客</h2>
-      <a href="{{ '/blog/' | relative_url }}">查看全部 &rarr;</a>
+      <h2 class="section-title">Blog</h2>
+      <a href="{{ '/blog/' | relative_url }}">View all &rarr;</a>
     </div>
     <div class="blog-grid">
       {% for post in site.posts limit:4 %}
@@ -55,40 +69,7 @@ translated_url: /en/
 
 <section class="section" id="research">
   <div class="container">
-    <h2 class="section-title">研究项目</h2>
-    <div class="project-grid">
-      {% for item in site.data.projects %}
-      <article class="project-card">
-        <div class="project-card-cover">
-          <canvas class="auto-cover" data-seed="{{ item.title }}"></canvas>
-        </div>
-        <div class="project-content">
-          <h3>{{ item.title }}</h3>
-          <p>{{ item.description }}</p>
-          <p class="tag-row">{% for t in item.tags %}<span>{{ t }}</span>{% endfor %}</p>
-        </div>
-      </article>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<section class="section" id="timeline">
-  <div class="container panel">
-    <h2 class="section-title">研究经历</h2>
-    <div class="timeline">
-      <div class="timeline-item">
-        <h3>2023 Fall · Lakehouse 系统研究</h3>
-        <p>构建模型预测 SQL 执行时延，辅助系统调度与性能优化。<br><span class="meta">Supervisor: Lin Ma · University of Michigan</span></p>
-      </div>
-      <div class="timeline-item">
-        <h3>2023 Summer · NLP 研究</h3>
-        <p>在 PsyQA 等任务上评测 tokenizer 与多种 LLM 表现。<br><span class="meta">Supervisor: Rada Mihalcea · University of Michigan</span></p>
-      </div>
-      <div class="timeline-item">
-        <h3>2021 · 异常声音检测</h3>
-        <p>训练 anomaly sound detection 模型并部署到 RZ/T2 board。<br><span class="meta">Supervisor: Fan Wu · Shanghai Jiao Tong University</span></p>
-      </div>
-    </div>
+    <h2 class="section-title">Projects</h2>
+    <p style="text-align:center; color: var(--muted);">Coming soon...</p>
   </div>
 </section>

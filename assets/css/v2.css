@@ -204,6 +204,21 @@ h1 {
 }
 .post-item p { margin: 0; color: var(--muted); font-size: .9rem; }
 
+/* ==================== Publications ==================== */
+.pub-item {
+  padding: 1rem 1.2rem; margin-bottom: .8rem;
+  background: var(--panel); border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  transition: all .25s ease;
+}
+.pub-item:hover { border-left-color: var(--brand); box-shadow: 0 4px 12px rgba(37,99,235,.08); }
+.pub-item h3 { margin: 0 0 .3rem; font-size: 1.05rem; font-weight: 600; }
+.pub-item h3 a { color: var(--text); text-decoration: none; }
+.pub-item h3 a:hover { color: var(--brand); }
+.pub-item p { margin: 0; color: var(--muted); font-size: .9rem; }
+.pub-item .meta { font-weight: 600; color: var(--brand); font-size: .85rem; }
+
 /* ==================== Timeline ==================== */
 .timeline { display: grid; gap: 1rem; }
 .timeline-item {
