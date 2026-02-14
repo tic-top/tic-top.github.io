@@ -16,7 +16,73 @@ if (menuBtn && nav) {
   });
 }
 
-// === 2. Animated Cover Art Generator ===
+// === 2. Flowing Background ===
+(function() {
+  const bg = document.getElementById('bg-flow');
+  if (!bg) return;
+  const ctx = bg.getContext('2d');
+
+  function resize() {
+    bg.width = window.innerWidth;
+    bg.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // 5 soft blobs that drift around
+  const blobs = [];
+  const palette = [
+    [37, 99, 235],   // brand blue
+    [124, 58, 237],  // accent purple
+    [6, 182, 212],   // cyan
+    [59, 130, 246],  // light blue
+    [167, 139, 250], // lavender
+  ];
+  for (let i = 0; i < 5; i++) {
+    blobs.push({
+      x: Math.random(), y: Math.random(),
+      vx: (Math.random() - 0.5) * 0.0003,
+      vy: (Math.random() - 0.5) * 0.0003,
+      r: 0.25 + Math.random() * 0.2,
+      color: palette[i],
+      phase: Math.random() * Math.PI * 2,
+    });
+  }
+
+  function drawBg(t) {
+    const w = bg.width, h = bg.height;
+    // Soft base
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(0, 0, w, h);
+
+    const s = Math.min(w, h);
+    for (const b of blobs) {
+      // Drift
+      b.x += b.vx + Math.sin(t * 0.0002 + b.phase) * 0.00008;
+      b.y += b.vy + Math.cos(t * 0.00015 + b.phase) * 0.00008;
+      // Wrap around edges softly
+      if (b.x < -0.2) b.x = 1.2;
+      if (b.x > 1.2) b.x = -0.2;
+      if (b.y < -0.2) b.y = 1.2;
+      if (b.y > 1.2) b.y = -0.2;
+
+      const pulse = b.r + Math.sin(t * 0.0003 + b.phase) * 0.04;
+      const cx = b.x * w, cy = b.y * h, cr = pulse * s;
+      const [r, g, bl] = b.color;
+      const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, cr);
+      grad.addColorStop(0, `rgba(${r},${g},${bl},0.12)`);
+      grad.addColorStop(0.5, `rgba(${r},${g},${bl},0.05)`);
+      grad.addColorStop(1, `rgba(${r},${g},${bl},0)`);
+      ctx.fillStyle = grad;
+      ctx.fillRect(cx - cr, cy - cr, cr * 2, cr * 2);
+    }
+  }
+
+  // Run on same rAF as cover art
+  window._bgDraw = drawBg;
+})();
+
+// === 3. Animated Cover Art Generator ===
 
 function hashString(str) {
   let h1 = 5381, h2 = 52711;
@@ -182,12 +248,11 @@ function drawCover(canvas, seed, time) {
   }
 }
 
-// === 3. Animation loop ===
+// === 4. Animation loop ===
 document.addEventListener('DOMContentLoaded', () => {
   const canvases = document.querySelectorAll('canvas.auto-cover[data-seed]');
-  if (!canvases.length) return;
 
-  // Initialize canvas sizes
+  // Initialize cover canvas sizes
   canvases.forEach(canvas => {
     const rect = canvas.getBoundingClientRect();
     const dpr = window.devicePixelRatio || 1;
@@ -198,26 +263,26 @@ document.addEventListener('DOMContentLoaded', () => {
     drawCover(canvas, canvas.dataset.seed, 0);
   });
 
-  // Animation loop with IntersectionObserver for performance
+  // Observe visibility for cover canvases
   const visibleCanvases = new Set();
+  if (canvases.length) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) visibleCanvases.add(entry.target);
+        else visibleCanvases.delete(entry.target);
+      });
+    }, { threshold: 0.05 });
+    canvases.forEach(c => observer.observe(c));
+  }
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        visibleCanvases.add(entry.target);
-      } else {
-        visibleCanvases.delete(entry.target);
-      }
-    });
-  }, { threshold: 0.05 });
-
-  canvases.forEach(c => observer.observe(c));
-
+  // Unified animation loop: background + cover art
   let lastFrame = 0;
   function animate(now) {
-    // Throttle to ~20fps for smooth but lightweight animation
     if (now - lastFrame > 50) {
       lastFrame = now;
+      // Flowing background
+      if (window._bgDraw) window._bgDraw(now);
+      // Cover art
       visibleCanvases.forEach(canvas => {
         drawCover(canvas, canvas.dataset.seed, now);
       });

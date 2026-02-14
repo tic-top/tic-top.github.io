@@ -25,22 +25,6 @@ title: Home
   </div>
 </section>
 
-<section class="section" id="publications">
-  <div class="container">
-    <div class="section-head">
-      <h2 class="section-title">Publications</h2>
-      <a href="{{ site.author.googlescholar }}" target="_blank">Google Scholar &rarr;</a>
-    </div>
-    {% for pub in site.publications reversed %}
-    <div class="pub-item">
-      <h3><a href="{{ pub.paperurl }}" target="_blank">{{ pub.title }}</a></h3>
-      <p class="meta">{{ pub.venue }}</p>
-      <p>{{ pub.excerpt }}</p>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-
 <section class="section" id="blog">
   <div class="container">
     <div class="section-head">
@@ -64,6 +48,22 @@ title: Home
       </a>
       {% endfor %}
     </div>
+  </div>
+</section>
+
+<section class="section" id="publications">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Publications</h2>
+      <a href="{{ site.author.googlescholar }}" target="_blank">Google Scholar &rarr;</a>
+    </div>
+    {% for pub in site.publications reversed %}
+    <div class="pub-item">
+      <h3><a href="{{ pub.paperurl }}" target="_blank">{{ pub.title }}</a></h3>
+      <p class="meta">{{ pub.venue }}</p>
+      <p>{{ pub.excerpt }}</p>
+    </div>
+    {% endfor %}
   </div>
 </section>
 
