@@ -15,7 +15,7 @@ title: Home
     </div>
     <h1><span data-typing="Hi, I'm Yilin."></span></h1>
     <p class="lead">
-      Master at UMich CS, Dual-degree undergrad at UMich CS &times; SJTU ECE. I love building things with AI.
+      M.S. student in Computer Science at the University of Michigan, following a dual-degree B.S. in CS (UMich) and ECE (SJTU). I like building things with AI.
     </p>
     <div class="skill-badges">
       <span class="skill-badge">Python</span>
@@ -87,6 +87,10 @@ title: Home
   <div class="container">
     <div class="section-marker">Builds</div>
     <h2 class="section-title">Projects</h2>
-    <p style="text-align:center; color: var(--muted);">Coming soon...</p>
+    <div class="empty-state">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+      <p class="meta">In progress</p>
+      <p>项目页正在整理中,近期会放上几个正在做的东西。</p>
+    </div>
   </div>
 </section>

@@ -194,7 +194,8 @@ a:hover { color: var(--accent); }
 /* Hero title with gradient + typing cursor */
 .hero h1 {
   font-size: clamp(1.8rem, 4vw, 3.5rem);
-  margin: 0 0 .5rem; font-weight: 800; line-height: 1.2;
+  margin: 0 0 .5rem; font-weight: 800; line-height: 1.1;
+  letter-spacing: -0.02em;
   background: linear-gradient(135deg, var(--text-bright) 0%, var(--brand) 50%, var(--accent) 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
@@ -240,9 +241,8 @@ a:hover { color: var(--accent); }
 .section { padding: 2.5rem 0; }
 .section-title {
   text-align: center; font-size: clamp(1.5rem, 3vw, 2.2rem);
-  margin: 0 0 1.5rem; font-weight: 700;
-  background: linear-gradient(135deg, var(--text-bright), var(--brand));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  margin: 0 0 1.5rem; font-weight: 700; letter-spacing: -0.015em;
+  color: var(--text-bright);
 }
 .section-head {
   display: flex; justify-content: space-between; align-items: center;
@@ -317,9 +317,8 @@ a:hover { color: var(--accent); }
 .project-card-cover img { width: 100%; height: 100%; object-fit: cover; }
 .project-content { padding: 1rem; }
 .project-content h3 {
-  margin: 0 0 .5rem; font-size: 1.15rem; font-weight: 700;
-  background: linear-gradient(135deg, var(--text-bright), var(--brand));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  margin: 0 0 .5rem; font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--text-bright);
 }
 .project-content p { margin: 0 0 .75rem; color: var(--muted); font-size: .92rem; line-height: 1.6; }
 
@@ -345,10 +344,10 @@ a:hover { color: var(--accent); }
 .blog-card-cover canvas { width: 100%; height: 100%; display: block; }
 .blog-card-body { padding: 1rem; }
 .blog-card-body h3 {
-  margin: .25rem 0 .5rem; font-size: 1.1rem; font-weight: 700;
-  background: linear-gradient(135deg, var(--text-bright), var(--brand));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  margin: .25rem 0 .5rem; font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--text-bright);
 }
+.blog-card:hover .blog-card-body h3 { color: var(--brand); transition: color .25s ease; }
 .blog-card-body p { margin: 0; color: var(--muted); font-size: .9rem; }
 
 /* ==================== Legacy compat ==================== */
@@ -365,9 +364,8 @@ a:hover { color: var(--accent); }
   box-shadow: 0 8px 32px rgba(0, 212, 255, 0.08);
 }
 .post-item h3 {
-  margin: .25rem 0 .5rem; font-size: 1.1rem; font-weight: 700;
-  background: linear-gradient(135deg, var(--text-bright), var(--brand));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  margin: .25rem 0 .5rem; font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--text-bright);
 }
 .post-item p { margin: 0; color: var(--muted); font-size: .9rem; }
 
@@ -375,45 +373,51 @@ a:hover { color: var(--accent); }
 .pub-item {
   padding: 1rem 1.2rem; margin-bottom: .8rem;
   background: var(--panel); border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  border-radius: 8px;
+  border-radius: 12px;
   backdrop-filter: blur(12px);
   transition: all .3s ease;
 }
 .pub-item:hover {
-  border-left-color: var(--brand);
   box-shadow: 0 4px 20px rgba(0, 212, 255, 0.06);
   border-color: var(--border-hover);
+  transform: translateY(-2px);
 }
-.pub-item h3 { margin: 0 0 .3rem; font-size: 1.05rem; font-weight: 600; }
+.pub-item h3 { margin: 0 0 .3rem; font-size: 1.05rem; font-weight: 600; letter-spacing: -0.005em; }
 .pub-item h3 a { color: var(--text); text-decoration: none; transition: color .25s; }
 .pub-item h3 a:hover { color: var(--brand); }
 .pub-item p { margin: 0; color: var(--muted); font-size: .9rem; }
-.pub-item .meta { font-weight: 600; color: var(--brand); font-size: .85rem; }
+.pub-item .meta {
+  font-weight: 600; color: var(--brand); font-size: .78rem;
+  font-family: "JetBrains Mono", monospace; letter-spacing: .04em;
+  text-transform: uppercase;
+}
 
 /* ==================== Timeline ==================== */
-.timeline { display: grid; gap: 1rem; }
+.timeline { display: grid; gap: 1rem; position: relative; padding-left: 1.4rem; }
+.timeline::before {
+  content: '';
+  position: absolute; left: .2rem; top: .6rem; bottom: .6rem;
+  width: 1px; background: var(--border);
+}
 .timeline-item {
-  padding: .85rem 0 .85rem 1rem;
-  border-left: 2px solid rgba(0, 212, 255, 0.3);
-  background: rgba(0, 212, 255, 0.03);
-  border-radius: 8px;
-  transition: all .3s ease;
+  padding: .3rem 0;
   position: relative;
+  transition: transform .3s ease;
 }
 .timeline-item::before {
   content: '';
-  position: absolute; left: -5px; top: 1.1rem;
+  position: absolute; left: -1.2rem; top: .5rem;
   width: 8px; height: 8px; border-radius: 50%;
   background: var(--brand);
   box-shadow: 0 0 8px rgba(0, 212, 255, 0.4);
 }
-.timeline-item:hover {
-  background: rgba(0, 212, 255, 0.06);
-  border-left-color: var(--brand);
-}
-.timeline-item h3 { margin: 0 0 .4rem; font-size: 1.05rem; color: var(--text); }
+.timeline-item:hover { transform: translateX(3px); }
+.timeline-item h3 { margin: 0 0 .35rem; font-size: 1.05rem; font-weight: 600; letter-spacing: -0.005em; color: var(--text); }
 .timeline-item p { margin: 0; color: var(--muted); font-size: .9rem; }
+.timeline-item .meta {
+  font-family: "JetBrains Mono", monospace; font-size: .78rem;
+  letter-spacing: .04em; text-transform: uppercase;
+}
 
 /* ==================== Tags ==================== */
 .tag-row span {
@@ -461,6 +465,21 @@ a:hover { color: var(--accent); }
   box-shadow: 0 0 12px rgba(0, 212, 255, 0.1);
 }
 
+/* ==================== Empty State ==================== */
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; gap: .6rem;
+  text-align: center; padding: 2.5rem 1.5rem;
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+  color: var(--muted);
+}
+.empty-state svg { color: var(--muted); opacity: .6; }
+.empty-state p { margin: 0; font-size: .92rem; }
+.empty-state .meta {
+  font-family: "JetBrains Mono", monospace; font-size: .78rem;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--brand);
+}
+
 /* ==================== Post ==================== */
 .post { margin-top: 2rem; }
 .post-shell {
@@ -470,8 +489,7 @@ a:hover { color: var(--accent); }
   backdrop-filter: blur(16px);
 }
 .post h1 {
-  background: linear-gradient(135deg, var(--text-bright), var(--brand), var(--accent));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  color: var(--text-bright); letter-spacing: -0.02em; line-height: 1.15;
 }
 .post-top-links {
   display: flex; justify-content: space-between; gap: 1rem;
